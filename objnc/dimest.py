@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import linregress, spearmanr, pearsonr
+from math import sqrt
 
 
 def estimate_dim(dists, fraction = 0.9, plot_dim = True):
@@ -60,20 +61,22 @@ def block_analysis(dists,  fraction, blocks = list(range(1, 21)), plot_blocks = 
 #---------------- plots
 	
 def plot_cumulatives(R,fraction,models):
-    fig = plt.figure(figsize=(15,15))
-    for i in range(len(models)):
+    fig = plt.figure(figsize=(10,10))
+    for i in range(len(R)):
         logmu = R[i][0]    
         logF =  R[i][1]
         npoints = int(np.floor(logmu.size * fraction))   
         plt.subplot(3,3,i + 1)
         plt.plot(logmu[0:npoints],logF[0:npoints],'r.',markersize=0.3)   
-        plt.title('models[i] --- ' + str(np.round(R[i][2].slope , 3) ))
+        plt.title(models[i] + ' --- ' + str(np.round(R[i][2].slope , 3) ))
     plt.show()
     
 def plot_correlations(R,models):
     c = [ x[2].rvalue for x in R]
     fig = plt.figure()
-    plt.plot(c,'-o')        
+    plt.plot(c,'-bo')      
+    plt.plot(np.zeros((len(c),1)) + 0.99, '--r')
+    plt.ylim([0.95, 1.01])
     plt.show()
     
 def plot_dimensions(R,models):
