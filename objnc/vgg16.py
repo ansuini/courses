@@ -139,14 +139,14 @@ class Vgg16():
         model.load_weights(get_file(fname, self.FILE_PATH+fname, cache_subdir='models'))
 
 
-    def get_batches(self, path, gen=image.ImageDataGenerator(), shuffle=True, batch_size=8, class_mode='categorical'):
+    def get_batches(self, path, gen=image.ImageDataGenerator(), shuffle=True, batch_size=8, class_mode='categorical', seed=None):
         """
             Takes the path to a directory, and generates batches of augmented/normalized data. Yields batches indefinitely, in an infinite loop.
 
             See Keras documentation: https://keras.io/preprocessing/image/
         """
         return gen.flow_from_directory(path, target_size=(224,224),
-                class_mode=class_mode, shuffle=shuffle, batch_size=batch_size)
+                class_mode=class_mode, shuffle=shuffle, batch_size=batch_size, seed=seed)
 
 
     def ft(self, num):
