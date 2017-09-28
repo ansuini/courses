@@ -63,12 +63,16 @@ def block_analysis(dists,  fraction, blocks = list(range(1, 21)), plot_blocks = 
 def plot_cumulatives(R,fraction,models):
     fig = plt.figure(figsize=(10,10))
     for i in range(len(R)):
-        logmu = R[i][0]    
-        logF =  R[i][1]
-        npoints = int(np.floor(logmu.size * fraction))   
+        x = R[i][0]    
+        y = R[i][1]
+        npoints = int(np.floor(x.size * fraction))   
         plt.subplot(3,3,i + 1)
-        plt.plot(logmu[0:npoints],logF[0:npoints],'r.',markersize=0.3)   
+        plt.plot(x[0:npoints],y[0:npoints],'r.',markersize=0.3)   
+        plt.plot([0, x[npoints]], [   R[i][2].intercept, R[i][2].slope * x[npoints]], '-b', linewidth = 0.2)
         plt.title(models[i] + ' --- ' + str(np.round(R[i][2].slope , 3) ))
+        plt.ylim([0., 3])
+        plt.xticks([])
+        plt.yticks([])
     plt.show()
     
 def plot_correlations(R,models):
@@ -80,8 +84,14 @@ def plot_correlations(R,models):
     plt.show()
     
 def plot_dimensions(R,models):
-    c = [ x[2].slope for x in R]
+    layers = range(len(models))
+    #c = np.log( [ x[2].slope for x in R] )
+    c = [ x[2].slope for x in R] 
     fig = plt.figure()
-    plt.plot(c,'-o')        
+    plt.plot(layers, c,'-o')   
+    plt.xticks(layers, models, rotation='vertical')
+    plt.ylim([0, 1.1*max(c)])
+    plt.xlabel('Layer')
+    plt.ylabel('Estimated Dimension')
     plt.show()
     
