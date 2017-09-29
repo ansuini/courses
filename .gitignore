@@ -4,6 +4,7 @@ _site/
 .ipynb_checkpoints/
 models/
 data/
+*.npy
 *.pyc
 *.h5
 ai_aliases.sh
